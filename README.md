@@ -24,7 +24,7 @@ qse --version
 ### Output
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/2dc11693-d0e0-4900-a5fb-876c87806570" width="800px"/>
+   <img src="https://github.com/user-attachments/assets/146014fb-db6d-4a6c-be26-275cdb72d98c" width="800px"/>
 </div>
 
 ## List
@@ -38,7 +38,7 @@ qse list
 ### Output
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/c4c839f4-761a-479c-8b1f-4ca53eab3458" width="800px"/>
+   <img src="https://github.com/user-attachments/assets/00cfa0d6-462d-43ee-9389-aebf5cd286d2" width="800px"/>
 </div>
 
 ## Init
@@ -52,7 +52,21 @@ qse init
 ### Output
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/7e246ad7-add4-479a-9970-e3d79e8480ac" width="800px"/>
+   <img src="https://github.com/user-attachments/assets/84e2fc79-9b88-4817-baf4-56845d5ee756" width="800px"/>
+</div>
+
+
+Initialize without nodemon.
+
+
+```bash
+qse init --remove-nodemon
+```
+
+### Output
+
+<div align="center">
+   <img src="https://github.com/user-attachments/assets/279b2de6-4360-4399-aa98-cd9d17ca330f" width="800px"/>
 </div>
 
 ## Clear
@@ -149,7 +163,20 @@ To execute the tests, navigate to the root directory of the `quick_start_express
 ```bash
 npm test
 ```
-## Developers
+## Core Contributors
 
 - [Abhinav Ramakrishnan](https://github.com/Abhinav-ark)
 - [Ashwin Narayanan S](https://ashrockzzz2003.github.io/portfolio)
+
+## Contributors
+
+- [Harish G M](https://github.com/GMHarish285)
+- [Kiran Rajeev](https://github.com/KiranRajeev-KV)
+- [Adripo](https://github.com/adripo)
+- [Akshay K S](https://github.com/akshayks13)
+- [K Venkatesh](https://github.com/venkatesh21bit)
+- [Vaibav](https://github.com/vaibav03)
+- [Phuong Thuy Nguyen](https://github.com/irisgranger)
+- [Abhinav Bansal](https://github.com/Abhinav-Bansal751)
+- [Guilherme Almeida Lopes](https://github.com/alguiguilo098)
+- [Nitansh Shankar](https://github.com/BIJJUDAMA)
