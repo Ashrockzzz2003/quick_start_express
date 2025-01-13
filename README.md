@@ -4,7 +4,8 @@
 [![build status](https://img.shields.io/github/actions/workflow/status/CSE-25/quick_start_express/runJestTests.yml)](https://github.com/CSE-25/quick_start_express)
 
 # Quick Start Express
-
+ <a href="https://cse-25.github.io/quick_start_express/"> <img src="https://img.shields.io/badge/Explore%20Docs-Quick%20Start%20Express-blueviolet?style=for-the-badge&logo=rocket" alt="Quick Start Express Documentation"/> </a>
+ 
 A simple CLI tool to generate Express servers from multiple available templates. [View on NPM](https://www.npmjs.com/package/quick_start_express)
 
 # Commands
@@ -35,11 +36,10 @@ List all available commands and options.
 qse list
 ```
 
-
 ### Output
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/6f36f0e1-c714-4728-bd81-844b8104fe43" width="800px"/>
+   <img src="https://github.com/user-attachments/assets/7ad29ff0-97ad-416a-9392-9992ad272a20" width="800px"/>
 </div>
 
 ## Init
@@ -210,3 +210,4 @@ npm test
 - [Abhinav Bansal](https://github.com/Abhinav-Bansal751)
 - [Guilherme Almeida Lopes](https://github.com/alguiguilo098)
 - [Nitansh Shankar](https://github.com/BIJJUDAMA)
+- [Priyansh Narang](https://github.com/priyansh-narang2308)
