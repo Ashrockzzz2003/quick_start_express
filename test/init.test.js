@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import { exec as execCallback } from "child_process";
 import { promisify } from "util";
 import stripAnsi from "strip-ansi";
+import { expect } from "@jest/globals";
 
 const exec = promisify(execCallback);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -113,7 +114,7 @@ function computeSHA256Hash(dirName) {
 }
 
 // Verify if installing dependencies is happening by default
-// along with nodemon in package.json bby default.
+// along with nodemon in package.json by default.
 describe("normal init with default settings", () => {
     beforeEach(() => {
         initTempDirectory();
@@ -123,21 +124,11 @@ describe("normal init with default settings", () => {
         clearTempDirectory();
     });
 
-    test("no templates passed, should default to basic with nodemon", async () => {
-        const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "basic")
-        );
-        await exec(`node ../../bin/index.js init`, { cwd: tempDir });
-        const commandHash = computeSHA256Hash(tempDir);
-        expect(commandHash).toEqual(originalHash);
-
-        expect(hasNodemon()).toBe(true);
-        expect(nodeModulesExist()).toBe(true);
-    }, 20000);
+    // TODO: Add test for cases where `inquirer` prompts are used for this.
 
     test("basic with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "basic")
+            path.join(__dirname, "..", "templates", "basic"),
         );
         await exec(`node ../../bin/index.js init -t basic`, { cwd: tempDir });
         const commandHash = computeSHA256Hash(tempDir);
@@ -149,7 +140,7 @@ describe("normal init with default settings", () => {
 
     test("express_pg with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_pg")
+            path.join(__dirname, "..", "templates", "express_pg"),
         );
         await exec(`node ../../bin/index.js init -t express_pg`, {
             cwd: tempDir,
@@ -163,7 +154,7 @@ describe("normal init with default settings", () => {
 
     test("express_pg_sequelize with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_pg_sequelize")
+            path.join(__dirname, "..", "templates", "express_pg_sequelize"),
         );
         await exec(`node ../../bin/index.js init -t express_pg_sequelize`, {
             cwd: tempDir,
@@ -177,7 +168,7 @@ describe("normal init with default settings", () => {
 
     test("express_mysql with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_mysql")
+            path.join(__dirname, "..", "templates", "express_mysql"),
         );
         await exec(`node ../../bin/index.js init -t express_mysql`, {
             cwd: tempDir,
@@ -191,7 +182,7 @@ describe("normal init with default settings", () => {
 
     test("express_oauth_microsoft with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_oauth_microsoft")
+            path.join(__dirname, "..", "templates", "express_oauth_microsoft"),
         );
         await exec(`node ../../bin/index.js init -t express_oauth_microsoft`, {
             cwd: tempDir,
@@ -205,7 +196,7 @@ describe("normal init with default settings", () => {
 
     test("express_pg_prisma with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_pg_prisma")
+            path.join(__dirname, "..", "templates", "express_pg_prisma"),
         );
         await exec(`node ../../bin/index.js init -t express_pg_prisma`, {
             cwd: tempDir,
@@ -219,7 +210,7 @@ describe("normal init with default settings", () => {
 
     test("express_oauth_google with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_oauth_google")
+            path.join(__dirname, "..", "templates", "express_oauth_google"),
         );
         await exec(`node ../../bin/index.js init -t express_oauth_google`, {
             cwd: tempDir,
@@ -233,7 +224,7 @@ describe("normal init with default settings", () => {
 
     test("basic_ts with nodemon", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "basic_ts")
+            path.join(__dirname, "..", "templates", "basic_ts"),
         );
         await exec(`node ../../bin/index.js init -t basic_ts`, {
             cwd: tempDir,
@@ -255,23 +246,11 @@ describe("init --remove-deps", () => {
         clearTempDirectory();
     });
 
-    test("no templates passed, should default to basic with nodemon without deps installed", async () => {
-        const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "basic")
-        );
-        await exec(`node ../../bin/index.js init --remove-deps`, {
-            cwd: tempDir,
-        });
-        const commandHash = computeSHA256Hash(tempDir);
-        expect(commandHash).toEqual(originalHash);
-
-        expect(hasNodemon()).toBe(true);
-        expect(nodeModulesExist()).toBe(false);
-    }, 20000);
+    // TODO: Add test for cases where `inquirer` prompts are used for this.
 
     test("basic with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "basic")
+            path.join(__dirname, "..", "templates", "basic"),
         );
         await exec(`node ../../bin/index.js init -t basic --remove-deps`, {
             cwd: tempDir,
@@ -285,7 +264,7 @@ describe("init --remove-deps", () => {
 
     test("express_pg with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_pg")
+            path.join(__dirname, "..", "templates", "express_pg"),
         );
         await exec(`node ../../bin/index.js init -t express_pg --remove-deps`, {
             cwd: tempDir,
@@ -299,13 +278,13 @@ describe("init --remove-deps", () => {
 
     test("express_pg_sequelize with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_pg_sequelize")
+            path.join(__dirname, "..", "templates", "express_pg_sequelize"),
         );
         await exec(
             `node ../../bin/index.js init -t express_pg_sequelize --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         const commandHash = computeSHA256Hash(tempDir);
         expect(commandHash).toEqual(originalHash);
@@ -316,13 +295,13 @@ describe("init --remove-deps", () => {
 
     test("express_mysql with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_mysql")
+            path.join(__dirname, "..", "templates", "express_mysql"),
         );
         await exec(
             `node ../../bin/index.js init -t express_mysql --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         const commandHash = computeSHA256Hash(tempDir);
         expect(commandHash).toEqual(originalHash);
@@ -333,13 +312,13 @@ describe("init --remove-deps", () => {
 
     test("express_oauth_microsoft with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_oauth_microsoft")
+            path.join(__dirname, "..", "templates", "express_oauth_microsoft"),
         );
         await exec(
             `node ../../bin/index.js init -t express_oauth_microsoft --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         const commandHash = computeSHA256Hash(tempDir);
         expect(commandHash).toEqual(originalHash);
@@ -350,13 +329,13 @@ describe("init --remove-deps", () => {
 
     test("express_pg_prisma with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_pg_prisma")
+            path.join(__dirname, "..", "templates", "express_pg_prisma"),
         );
         await exec(
             `node ../../bin/index.js init -t express_pg_prisma --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         const commandHash = computeSHA256Hash(tempDir);
         expect(commandHash).toEqual(originalHash);
@@ -367,13 +346,13 @@ describe("init --remove-deps", () => {
 
     test("express_oauth_google with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "express_oauth_google")
+            path.join(__dirname, "..", "templates", "express_oauth_google"),
         );
         await exec(
             `node ../../bin/index.js init -t express_oauth_google --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         const commandHash = computeSHA256Hash(tempDir);
         expect(commandHash).toEqual(originalHash);
@@ -384,7 +363,7 @@ describe("init --remove-deps", () => {
 
     test("basic_ts with nodemon without deps installed", async () => {
         const originalHash = computeSHA256Hash(
-            path.join(__dirname, "..", "templates", "basic_ts")
+            path.join(__dirname, "..", "templates", "basic_ts"),
         );
         await exec(`node ../../bin/index.js init -t basic_ts --remove-deps`, {
             cwd: tempDir,
@@ -410,41 +389,41 @@ describe("init with custom template name without installing deps", () => {
     test("invalid template name passed", async () => {
         const { stdout, stderr } = await exec(
             `node ../../bin/index.js init -t invalid_template --remove-deps`,
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         expect(stripAnsi(stderr)).toContain(
-            `Template invalid_template does not exist. To see available templates use "qse list".`
+            `Template invalid_template does not exist. To see available templates use "qse list".`,
         );
     });
 
     test("invalid template name: >214 characters", async () => {
         const longName = "a".repeat(215);
         const { stderr } = await exec(
-            `node ../../bin/index.js init -n ${longName} --remove-deps`,
-            { cwd: tempDir }
+            `node ../../bin/index.js init -t basic -n ${longName} --remove-deps`,
+            { cwd: tempDir },
         );
         expect(stripAnsi(stderr)).toContain(
-            "Invalid package name: name can no longer contain more than 214 characters. Please provide a valid package name."
+            "Invalid package name: name can no longer contain more than 214 characters. Please provide a valid package name.",
         );
     });
 
     test("invalid template name: contains uppercase characters", async () => {
         const { stderr } = await exec(
-            `node ../../bin/index.js init -n InvalidName --remove-deps`,
-            { cwd: tempDir }
+            `node ../../bin/index.js init -t basic -n InvalidName --remove-deps`,
+            { cwd: tempDir },
         );
         expect(stripAnsi(stderr)).toContain(
-            "Invalid package name: name can no longer contain capital letters. Please provide a valid package name."
+            "Invalid package name: name can no longer contain capital letters. Please provide a valid package name.",
         );
     });
 
     test("invalid template name: contains non URL friendly charcters", async () => {
         const { stderr } = await exec(
-            `node ../../bin/index.js init -n "#invalid name%" --remove-deps`,
-            { cwd: tempDir }
+            `node ../../bin/index.js init -t basic -n "#invalid name%" --remove-deps`,
+            { cwd: tempDir },
         );
         expect(stripAnsi(stderr)).toContain(
-            "Invalid package name: name can only contain URL-friendly characters. Please provide a valid package name."
+            "Invalid package name: name can only contain URL-friendly characters. Please provide a valid package name.",
         );
     });
 
@@ -454,7 +433,7 @@ describe("init with custom template name without installing deps", () => {
             `node ../../bin/index.js init -t basic -n ${validName} --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         verifyPackageName(validName);
     }, 20000);
@@ -462,10 +441,10 @@ describe("init with custom template name without installing deps", () => {
     test("valid template name: lowercase only", async () => {
         const validName = "validname";
         await exec(
-            `node ../../bin/index.js init -n ${validName} --remove-deps`,
+            `node ../../bin/index.js init -t basic -n ${validName} --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         verifyPackageName(validName);
     }, 20000);
@@ -473,13 +452,15 @@ describe("init with custom template name without installing deps", () => {
     test("valid template name: URL friendly characters", async () => {
         const validName = "valid-name";
         await exec(
-            `node ../../bin/index.js init -n ${validName} --remove-deps`,
+            `node ../../bin/index.js init -t basic -n ${validName} --remove-deps`,
             {
                 cwd: tempDir,
-            }
+            },
         );
         verifyPackageName(validName);
     }, 20000);
+
+    // TODO: Add test for cases where `inquirer` prompts are used for this.
 });
 
 // Not installing dependencies for faster tests.
@@ -492,27 +473,12 @@ describe("init without nodemon option without installing deps.", () => {
         clearTempDirectory();
     });
 
-    test("no template passed, should default to basic template without nodemon", async () => {
-        await exec(
-            "node ../../bin/index.js init --remove-nodemon --remove-deps",
-            {
-                cwd: tempDir,
-            }
-        );
-        const packageJson = readPackageJson();
-
-        expect(packageJson.scripts.start).not.toContain("nodemon");
-        expect(packageJson.scripts.dev).toBeUndefined();
-
-        if (packageJson.devDependencies) {
-            expect(packageJson.devDependencies).not.toHaveProperty("nodemon");
-        }
-    }, 20000);
+    // TODO: Add test for cases where `inquirer` prompts are used for this.
 
     test("basic without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t basic --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -527,7 +493,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("express_pg without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t express_pg --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -542,7 +508,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("express_pg_sequelize without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t express_pg_sequelize --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -557,7 +523,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("express_mysql without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t express_mysql --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -572,7 +538,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("express_oauth_microsoft without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t express_oauth_microsoft --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -587,7 +553,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("express_pg_prisma without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t express_pg_prisma --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -602,7 +568,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("express_oauth_google without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t express_oauth_google --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
@@ -617,7 +583,7 @@ describe("init without nodemon option without installing deps.", () => {
     test("basic_ts without nodemon", async () => {
         await exec(
             "node ../../bin/index.js init -t basic_ts --remove-nodemon --remove-deps",
-            { cwd: tempDir }
+            { cwd: tempDir },
         );
         const packageJson = readPackageJson();
 
