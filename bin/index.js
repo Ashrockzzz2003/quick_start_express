@@ -10,8 +10,13 @@ import chalk from "chalk";
 import { createSpinner } from "nanospinner";
 import { metadata, commands, templates } from "./configs.js";
 import validate from "validate-npm-package-name";
-import { getServicesData, generateDockerComposeFile } from "./util/docker.js";
+import {
+    getServicesData,
+    generateDockerComposeFile,
+    userPrompts,
+} from "./util/docker.js";
 import { initMenu } from "./util/menu.js";
+import { clearCWD } from "./util/clear.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -88,31 +93,7 @@ program
     .command(commands.clear.command)
     .description(commands.clear.description)
     .action(() => {
-        const targetDir = process.cwd();
-        console.log("Clearing Directory...", chalk.bgRed.white(targetDir));
-        const clearingDirectory = createSpinner(
-            "Deleting All Files...",
-        ).start();
-        try {
-            // Read the directory.
-            const files = fs.readdirSync(targetDir);
-
-            for (const file of files) {
-                const filePath = path.join(targetDir, file);
-                // if (file !== '.' && file !== '..') {
-                fs.removeSync(filePath);
-                // }
-            }
-
-            clearingDirectory.success({
-                text: "Successfully cleared project directory.",
-            });
-        } catch (error) {
-            clearingDirectory.error({
-                text: "Error clearing project directory",
-            });
-            console.error(error);
-        }
+        clearCWD();
     });
 
 async function initCommand(options) {
@@ -164,6 +145,7 @@ async function initCommand(options) {
 
     const isUrl = templates[selectedTemplate].isUrl;
     const needDB = templates[selectedTemplate].needDB;
+    let runtimeNeedDB = false;
 
     let dockerTemplate =
         selectedTemplate.split("_")[0] === "express" ||
@@ -184,9 +166,16 @@ async function initCommand(options) {
 
     if (dockerCompose) {
         try {
+            const userPrompt = await userPrompts(needDB);
+            if (needDB) {
+                runtimeNeedDB = userPrompt.runtimeNeedDB;
+            }
+
             const serviceData = await getServicesData(
                 packageName,
                 selectedTemplate,
+                runtimeNeedDB,
+                userPrompt.addCacheService,
             );
 
             console.log("Starting server initialization...");
@@ -196,6 +185,7 @@ async function initCommand(options) {
             ).start();
 
             const composeFileContent = generateDockerComposeFile(
+                runtimeNeedDB,
                 serviceData,
                 packageName,
                 selectedTemplate,
@@ -207,10 +197,8 @@ async function initCommand(options) {
                 text: `Docker Compose file generated successfully.`,
             });
         } catch (error) {
-            console.error(
-                chalk.red("Error generating Docker Compose file:"),
-                error,
-            );
+            console.log(chalk.red("Error generating Docker Compose file"));
+            console.error(error.message);
             return;
         }
     } else {
@@ -335,13 +323,13 @@ async function initCommand(options) {
         );
     }
 
-    if (dockerCompose && isUrl === true && needDB === true) {
+    if (dockerCompose && isUrl === true && runtimeNeedDB === true) {
         console.log(
             chalk.yellow("Important Note:"),
             chalk.white("Use"),
             chalk.blueBright.bold("host.docker.internal"),
             chalk.white("instead of"),
-            chalk.blueBright.bold("localhost"),
+            chalk.blueBright.bold("localhost/127.0.0.1"),
             chalk.white("in your Database Connection URL in the"),
             chalk.blueBright.bold(".env"),
             chalk.white("file for Docker to work correctly."),
